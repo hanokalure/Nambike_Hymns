@@ -22,56 +22,6 @@ class SongLyricsScreen extends StatefulWidget {
 }
 
 class _SongLyricsScreenState extends State<SongLyricsScreen> {
-  void _addToFavourites() {
-    if (!widget.favouriteSongs.contains(widget.songName)) {
-      setState(() {
-        widget.favouriteSongs.add(widget.songName);
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            '${widget.songName} added to Favourites!',
-            style: GoogleFonts.montserrat(),
-          ),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            '${widget.songName} is already in Favourites!',
-            style: GoogleFonts.montserrat(),
-          ),
-        ),
-      );
-    }
-  }
-
-  void _addToPlaylist() {
-    if (!widget.playlistSongs.contains(widget.songName)) {
-      setState(() {
-        widget.playlistSongs.add(widget.songName);
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            '${widget.songName} added to Playlist!',
-            style: GoogleFonts.montserrat(),
-          ),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            '${widget.songName} is already in Playlist!',
-            style: GoogleFonts.montserrat(),
-          ),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -103,54 +53,13 @@ class _SongLyricsScreenState extends State<SongLyricsScreen> {
                       style: GoogleFonts.montserrat(
                         color: Colors.black,
                         fontSize: 22,
-                        height: 1.3, // Adjusted line height
+                        height: 1.3,
                       ),
                     ),
                   ),
                 )
                 .toList(),
           ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: const Color(0xFF3498DB),
-          child: const Icon(Icons.add),
-          onPressed: () {
-            showModalBottomSheet(
-              context: context,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              ),
-              builder: (context) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      leading: const Icon(Icons.favorite, color: Colors.red),
-                      title: Text(
-                        'Add to Favourites',
-                        style: GoogleFonts.montserrat(),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                        _addToFavourites();
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.playlist_add, color: Colors.blue),
-                      title: Text(
-                        'Add to Playlist',
-                        style: GoogleFonts.montserrat(),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                        _addToPlaylist();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          },
         ),
       ),
     );

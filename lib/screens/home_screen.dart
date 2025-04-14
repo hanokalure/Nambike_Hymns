@@ -17,6 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   List<Map<String, dynamic>> songs = [];
   List<Map<String, dynamic>> filteredSongs = [];
+  List<String> favoriteSongs = [];
 
   @override
   void initState() {
@@ -42,6 +43,16 @@ class _HomeScreenState extends State<HomeScreen> {
       filteredSongs = songs.where((song) {
         return song['song_title'].toLowerCase().contains(query);
       }).toList();
+    });
+  }
+
+  void _toggleFavorite(String songTitle) {
+    setState(() {
+      if (favoriteSongs.contains(songTitle)) {
+        favoriteSongs.remove(songTitle);
+      } else {
+        favoriteSongs.add(songTitle);
+      }
     });
   }
 
@@ -126,8 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               ListTile(
                 leading: const Icon(Icons.person),
-                title:
-                    Text('About Developer', style: GoogleFonts.montserrat()),
+                title: Text('About Developer', style: GoogleFonts.montserrat()),
                 onTap: () {
                   Navigator.pop(context);
                   _showDeveloperDialog(context);
@@ -138,7 +148,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: Column(
           children: [
-            // Top Navbar
             Container(
               width: double.infinity,
               height: 120,
@@ -172,14 +181,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       icon: const Icon(Icons.search, color: Color(0xFF3498DB)),
                       onPressed: () {
                         _onSearchChanged();
-                        FocusScope.of(context).unfocus(); // Hide keyboard
+                        FocusScope.of(context).unfocus();
                       },
                     ),
                   ],
                 ),
               ),
             ),
-            // Song List
             Expanded(
               child: filteredSongs.isEmpty
                   ? Center(
@@ -192,6 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemCount: filteredSongs.length,
                       itemBuilder: (context, index) {
                         final song = filteredSongs[index];
+                        final isFavorite = favoriteSongs.contains(song['song_title']);
                         return InkWell(
                           onTap: () {
                             Navigator.push(
@@ -201,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   songName: song['song_title'],
                                   lyrics: song['lyrics'],
                                   songNumber: song['song_number'],
-                                  favouriteSongs: [],
+                                  favouriteSongs: favoriteSongs,
                                   playlistSongs: [],
                                 ),
                               ),
@@ -239,6 +248,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                 ),
+                                IconButton(
+                                  icon: Icon(
+                                    isFavorite ? Icons.favorite : Icons.favorite_border,
+                                    color: isFavorite ? Colors.red : Colors.grey,
+                                  ),
+                                  onPressed: () => _toggleFavorite(song['song_title']),
+                                ),
                               ],
                             ),
                           ),
@@ -267,7 +283,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (_) => const FavouritesScreen()),
+                    MaterialPageRoute(
+                      builder: (_) => FavouritesScreen(
+                        favoriteSongs: favoriteSongs,
+                        songs: songs,
+                        onRemoveFavorite: _toggleFavorite,
+                      ),
+                    ),
                   );
                 },
                 child: _buildNavButton(Icons.favorite, 'Favorites'),

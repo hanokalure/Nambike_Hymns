@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'home_screen.dart';
 import 'favourites_screen.dart';
 
+
 class PlaylistScreen extends StatelessWidget {
   const PlaylistScreen({super.key});
 
@@ -100,7 +101,16 @@ class PlaylistScreen extends StatelessWidget {
             onTap: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (_) => const FavouritesScreen()),
+                MaterialPageRoute(builder: (_) => FavouritesScreen(
+                  songs: const [
+                    {'title': 'Song 1', 'artist': 'Artist 1'},
+                    {'title': 'Song 2', 'artist': 'Artist 2'}
+                  ], // Pass the required 'songs' argument
+                  favoriteSongs: const ['Song 1', 'Song 2'],
+                  onRemoveFavorite: (song) {
+                    // Add logic to handle removing a favorite song
+                  },
+                )),
               );
             },
             child: _buildNavButton(Icons.favorite, 'Favorites'),
