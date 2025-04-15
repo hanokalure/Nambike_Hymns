@@ -24,4 +24,4 @@ A beautiful and intuitive **Flutter mobile app** designed for easy browsing, fav
 ## ▶️ How to Run
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/flutter-song-app.git
+   git clone https://github.com/hanokalure/Prince_Of_Peace_Songs.git
