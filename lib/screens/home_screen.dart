@@ -6,7 +6,12 @@ import 'favourites_screen.dart';
 import 'playlist_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final List<String> initialFavorites;
+  
+  const HomeScreen({
+    super.key, 
+    this.initialFavorites = const [], // Removed 'const'
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -22,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    favoriteSongs = List<String>.from(widget.initialFavorites); // Create modifiable copy
     fetchSongs();
     _searchController.addListener(_onSearchChanged);
   }
@@ -47,14 +53,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _toggleFavorite(String songTitle) {
-    setState(() {
-      if (favoriteSongs.contains(songTitle)) {
-        favoriteSongs.remove(songTitle);
-      } else {
-        favoriteSongs.add(songTitle);
-      }
-    });
-  }
+  setState(() {
+    if (favoriteSongs.contains(songTitle)) {
+      favoriteSongs.remove(songTitle);
+    } else {
+      favoriteSongs = List.from(favoriteSongs)..add(songTitle); // Ensure modifiable
+    }
+  });
+}
 
   @override
   void dispose() {
@@ -86,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context) => AlertDialog(
         title: Text('About Developer', style: GoogleFonts.montserrat()),
         content: Text(
-            'Developed with ❤️ by Hanok Alure\ncontact : hanokalure@gmail.com',
+            'contact : hanokalure@gmail.com',
             style: GoogleFonts.montserrat()),
         actions: [
           TextButton(
@@ -272,28 +278,25 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               InkWell(
                 onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (_) => const HomeScreen()),
-                  );
+                  // Already on home screen, no need to navigate
                 },
                 child: _buildNavButton(Icons.music_note, 'Songs'),
               ),
               InkWell(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => FavouritesScreen(
-                        favoriteSongs: favoriteSongs,
-                        songs: songs,
-                        onRemoveFavorite: _toggleFavorite,
-                      ),
-                    ),
-                  );
-                },
-                child: _buildNavButton(Icons.favorite, 'Favorites'),
-              ),
+  onTap: () {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => FavouritesScreen(
+          favoriteSongs: List.from(favoriteSongs), // Create modifiable copy
+          songs: songs,
+          onRemoveFavorite: _toggleFavorite,
+        ),
+      ),
+    );
+  },
+  child: _buildNavButton(Icons.favorite, 'Favorites'),
+),
               InkWell(
                 onTap: () {
                   Navigator.pushReplacement(

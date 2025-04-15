@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_screen.dart';
-import 'playlist_screen.dart';
+// import 'playlist_screen.dart';
 import 'song_lyrics_screen.dart';
 
 class FavouritesScreen extends StatefulWidget {
@@ -137,24 +137,34 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
             onTap: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (_) => const HomeScreen()),
+                MaterialPageRoute(
+                  builder: (_) => HomeScreen(
+                    initialFavorites: widget.favoriteSongs,
+                  ),
+                ),
               );
             },
             child: _buildNavButton(Icons.music_note, 'Songs'),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              // Already on favorites screen, no need to navigate
+            },
             child: _buildNavButton(Icons.favorite, 'Favorites'),
           ),
           InkWell(
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const PlaylistScreen()),
-              );
-            },
-            child: _buildNavButton(Icons.playlist_play, 'Playlist'),
-          ),
+  onTap: () {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => HomeScreen(
+          initialFavorites: List.from(widget.favoriteSongs), // Create modifiable copy
+        ),
+      ),
+    );
+  },
+  child: _buildNavButton(Icons.music_note, 'Songs'),
+),
         ],
       ),
     );
