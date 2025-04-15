@@ -10,7 +10,7 @@ class HomeScreen extends StatefulWidget {
   
   const HomeScreen({
     super.key, 
-    this.initialFavorites = const [], // Removed 'const'
+    this.initialFavorites = const [],
   });
 
   @override
@@ -27,18 +27,26 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    favoriteSongs = List<String>.from(widget.initialFavorites); // Create modifiable copy
+    favoriteSongs = List<String>.from(widget.initialFavorites);
     fetchSongs();
     _searchController.addListener(_onSearchChanged);
   }
 
   Future<void> fetchSongs() async {
     final response = await Supabase.instance.client
-        .from('songs')
-        .select()
-        .order('song_number', ascending: true);
+      .from('songs')
+      .select('song_title, lyrics')
+      .order('song_title', ascending: true);
+
     setState(() {
-      songs = List<Map<String, dynamic>>.from(response);
+      songs = List<Map<String, dynamic>>.from(response)
+        .asMap()
+        .map((index, song) => MapEntry(index, {
+          ...song,
+          'song_number': index + 1,
+        }))
+        .values
+        .toList();
       filteredSongs = songs;
     });
   }
@@ -53,14 +61,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _toggleFavorite(String songTitle) {
-  setState(() {
-    if (favoriteSongs.contains(songTitle)) {
-      favoriteSongs.remove(songTitle);
-    } else {
-      favoriteSongs = List.from(favoriteSongs)..add(songTitle); // Ensure modifiable
-    }
-  });
-}
+    setState(() {
+      if (favoriteSongs.contains(songTitle)) {
+        favoriteSongs.remove(songTitle);
+      } else {
+        favoriteSongs = List.from(favoriteSongs)..add(songTitle);
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -278,25 +286,25 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               InkWell(
                 onTap: () {
-                  // Already on home screen, no need to navigate
+                  // Already on home screen
                 },
                 child: _buildNavButton(Icons.music_note, 'Songs'),
               ),
               InkWell(
-  onTap: () {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => FavouritesScreen(
-          favoriteSongs: List.from(favoriteSongs), // Create modifiable copy
-          songs: songs,
-          onRemoveFavorite: _toggleFavorite,
-        ),
-      ),
-    );
-  },
-  child: _buildNavButton(Icons.favorite, 'Favorites'),
-),
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => FavouritesScreen(
+                        favoriteSongs: List.from(favoriteSongs),
+                        songs: songs,
+                        onRemoveFavorite: _toggleFavorite,
+                      ),
+                    ),
+                  );
+                },
+                child: _buildNavButton(Icons.favorite, 'Favorites'),
+              ),
               InkWell(
                 onTap: () {
                   Navigator.pushReplacement(
