@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_screen.dart';
-// import 'playlist_screen.dart';
+import 'categories_screen.dart';
 import 'song_lyrics_screen.dart';
 
 class FavouritesScreen extends StatefulWidget {
   final List<String> favoriteSongs;
   final List<Map<String, dynamic>> songs;
   final Function(String) onRemoveFavorite;
-  
+
   const FavouritesScreen({
-    super.key, 
+    super.key,
     required this.favoriteSongs,
     required this.songs,
     required this.onRemoveFavorite,
@@ -23,9 +23,8 @@ class FavouritesScreen extends StatefulWidget {
 class _FavouritesScreenState extends State<FavouritesScreen> {
   @override
   Widget build(BuildContext context) {
-    // Get full song data for favorites
     final favoriteSongData = widget.songs.where(
-      (song) => widget.favoriteSongs.contains(song['song_title'])
+      (song) => widget.favoriteSongs.contains(song['song_title']),
     ).toList();
 
     return Scaffold(
@@ -111,7 +110,8 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                                   Icons.favorite,
                                   color: Colors.red,
                                 ),
-                                onPressed: () => widget.onRemoveFavorite(song['song_title']),
+                                onPressed: () =>
+                                    widget.onRemoveFavorite(song['song_title']),
                               ),
                             ],
                           ),
@@ -148,23 +148,25 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
           ),
           InkWell(
             onTap: () {
-              // Already on favorites screen, no need to navigate
+              // Already on favorites screen
             },
             child: _buildNavButton(Icons.favorite, 'Favorites'),
           ),
           InkWell(
-  onTap: () {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => HomeScreen(
-          initialFavorites: List.from(widget.favoriteSongs), // Create modifiable copy
-        ),
-      ),
-    );
-  },
-  child: _buildNavButton(Icons.music_note, 'Songs'),
-),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => CategoriesScreen(
+                    favoriteSongs: widget.favoriteSongs,
+                    songs: widget.songs,
+                    onToggleFavorite: widget.onRemoveFavorite,
+                  ),
+                ),
+              );
+            },
+            child: _buildNavButton(Icons.category, 'Categories'),
+          ),
         ],
       ),
     );
@@ -178,8 +180,13 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
         children: [
           Icon(icon, color: Colors.white),
           const SizedBox(height: 4),
-          Text(label,
-              style: GoogleFonts.montserrat(color: Colors.white, fontSize: 16)),
+          Text(
+            label,
+            style: GoogleFonts.montserrat(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+          ),
         ],
       ),
     );

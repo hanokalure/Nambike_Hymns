@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'song_lyrics_screen.dart';
 import 'favourites_screen.dart';
-import 'playlist_screen.dart';
+import 'categories_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final List<String> initialFavorites;
@@ -166,8 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
               width: double.infinity,
               height: 120,
               color: const Color(0xFF3498DB),
-              padding:
-                  const EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 25),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 25),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -309,10 +308,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (_) => const PlaylistScreen()),
+                    MaterialPageRoute(
+                      builder: (_) => CategoriesScreen(
+                        favoriteSongs: List.from(favoriteSongs),
+                        songs: songs,
+                        onToggleFavorite: _toggleFavorite,
+                      ),
+                    ),
                   );
                 },
-                child: _buildNavButton(Icons.playlist_play, 'Playlist'),
+                child: _buildNavButton(Icons.category, 'Categories'),
               ),
             ],
           ),
@@ -329,8 +334,13 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Icon(icon, color: Colors.white),
           const SizedBox(height: 4),
-          Text(label,
-              style: GoogleFonts.montserrat(color: Colors.white, fontSize: 16)),
+          Text(
+            label,
+            style: GoogleFonts.montserrat(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+          ),
         ],
       ),
     );
