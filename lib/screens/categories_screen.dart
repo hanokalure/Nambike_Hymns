@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_screen.dart';
 import 'favourites_screen.dart';
+import 'category_songs_screen.dart';
 
 class CategoriesScreen extends StatelessWidget {
   final List<String> favoriteSongs;
@@ -18,11 +19,9 @@ class CategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final categories = [
-      'Hindi',
-      'Kannada',
-      'English',
-      'Tamil',
-      'Telugu',
+      'English Songs',
+      'Hindi Songs',
+      'Kannada Songs',
     ];
 
     return Scaffold(
@@ -69,15 +68,18 @@ class CategoriesScreen extends StatelessWidget {
                     ),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomeScreen(
-                            initialFavorites: favoriteSongs,
-                          ),
-                        ),
-                      );
-                    },
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategorySongsScreen(
+              category: categories[index],
+              favoriteSongs: favoriteSongs,
+              songs: songs,
+              onToggleFavorite: onToggleFavorite,
+            ),
+          ),
+        );
+      },
                   ),
                 );
               },

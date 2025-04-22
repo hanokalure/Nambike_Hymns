@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> fetchSongs() async {
     final response = await Supabase.instance.client
       .from('songs')
-      .select('song_title, lyrics')
+      .select('song_title, lyrics, category')
       .order('song_title', ascending: true);
 
     setState(() {
@@ -202,16 +202,18 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Expanded(
-              child: filteredSongs.isEmpty
-                  ? Center(
-                      child: Text('No songs found',
-                          style: GoogleFonts.montserrat(
-                              color: Colors.grey, fontSize: 18)),
-                    )
-                  : ListView.builder(
-                      padding: const EdgeInsets.all(16),
-                      itemCount: filteredSongs.length,
-                      itemBuilder: (context, index) {
+  child: RefreshIndicator(
+    onRefresh: fetchSongs, // This is your existing fetchSongs method
+    child: filteredSongs.isEmpty
+        ? Center(
+            child: Text('No songs found',
+                style: GoogleFonts.montserrat(
+                    color: Colors.grey, fontSize: 18)),
+          )
+        : ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: filteredSongs.length,
+            itemBuilder: (context, index) {
                         final song = filteredSongs[index];
                         final isFavorite = favoriteSongs.contains(song['song_title']);
                         return InkWell(
@@ -275,7 +277,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
             ),
-          ],
+            ),
+          ]
         ),
         bottomNavigationBar: Container(
           height: 72,

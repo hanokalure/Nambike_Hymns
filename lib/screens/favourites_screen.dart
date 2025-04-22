@@ -47,20 +47,27 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
             ),
           ),
           Expanded(
-            child: widget.favoriteSongs.isEmpty
-                ? Center(
-                    child: Text(
-                      'No favorite songs yet',
-                      style: GoogleFonts.montserrat(
-                        color: Colors.grey,
-                        fontSize: 18,
-                      ),
-                    ),
-                  )
-                : ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: favoriteSongData.length,
-                    itemBuilder: (context, index) {
+  child: RefreshIndicator(
+    onRefresh: () async {
+      // You might want to add a fetch method here if needed
+      // For now, we'll just trigger a rebuild
+      setState(() {});
+      return Future.value();
+    },
+    child: widget.favoriteSongs.isEmpty
+        ? Center(
+            child: Text(
+              'No favorite songs yet',
+              style: GoogleFonts.montserrat(
+                color: Colors.grey,
+                fontSize: 18,
+              ),
+            ),
+          )
+        : ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: favoriteSongData.length,
+            itemBuilder: (context, index) {
                       final song = favoriteSongData[index];
                       return InkWell(
                         onTap: () {
@@ -120,6 +127,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                     },
                   ),
           ),
+          )
         ],
       ),
       bottomNavigationBar: _buildBottomNavBar(context),
