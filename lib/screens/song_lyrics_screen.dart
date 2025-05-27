@@ -29,7 +29,7 @@ class _SongLyricsScreenState extends State<SongLyricsScreen> {
         appBar: AppBar(
           backgroundColor: const Color(0xFF3498DB),
           title: Text(
-            widget.songName,
+            '${widget.songNumber}. ${widget.songName}', // Display both number and title
             style: GoogleFonts.montserrat(
               color: Colors.white,
               fontSize: 20,
@@ -41,24 +41,26 @@ class _SongLyricsScreenState extends State<SongLyricsScreen> {
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: widget.lyrics
-                .split('\n')
-                .map(
-                  (line) => Padding(
-                    padding: const EdgeInsets.only(bottom: 8, top: 8),
-                    child: Text(
-                      line,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.montserrat(
-                        color: Colors.black,
-                        fontSize: 22,
-                        height: 1.3,
-                      ),
+            crossAxisAlignment: CrossAxisAlignment.start, // Changed to left align
+            children: [
+              // Add some spacing
+              const SizedBox(height: 16),
+              // Display lyrics with proper formatting
+              ...widget.lyrics.split('\n').map(
+                (line) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    line,
+                    textAlign: TextAlign.left, // Changed to left align
+                    style: GoogleFonts.montserrat(
+                      color: Colors.black,
+                      fontSize: 18, // Slightly smaller font for better readability
+                      height: 1.5,
                     ),
                   ),
-                )
-                .toList(),
+                ),
+              ),
+            ],
           ),
         ),
       ),

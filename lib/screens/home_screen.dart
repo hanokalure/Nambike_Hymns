@@ -52,13 +52,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onSearchChanged() {
-    final query = _searchController.text.toLowerCase();
-    setState(() {
-      filteredSongs = songs.where((song) {
-        return song['song_title'].toLowerCase().contains(query);
-      }).toList();
-    });
-  }
+  final query = _searchController.text.toLowerCase();
+  setState(() {
+    filteredSongs = songs.where((song) {
+      // Search both song title and song number
+      return song['song_title'].toLowerCase().contains(query) ||
+          song['song_number'].toString().contains(query);
+    }).toList();
+  });
+}
 
   void _toggleFavorite(String songTitle) {
     setState(() {
@@ -82,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text('About App', style: GoogleFonts.montserrat()),
-        content: Text('Prince of Peace Songs\nVersion 1.0.0',
+        content: Text('Nambike Hymns is a simple Christian lyrics app built to glorify God through worship. It provides easy access to heartfelt hymns for personal devotion and praise.',
             style: GoogleFonts.montserrat()),
         actions: [
           TextButton(
@@ -94,23 +96,24 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _showDeveloperDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('About Developer', style: GoogleFonts.montserrat()),
-        content: Text(
-            'contact : hanokalure@gmail.com',
-            style: GoogleFonts.montserrat()),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('OK', style: GoogleFonts.montserrat()),
-          ),
-        ],
-      ),
-    );
-  }
+  // ignore: unused_element
+  // void _showDeveloperDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: Text('About Developer', style: GoogleFonts.montserrat()),
+  //       content: Text(
+  //           'contact : hanokalure@gmail.com',
+  //           style: GoogleFonts.montserrat()),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(context),
+  //           child: Text('OK', style: GoogleFonts.montserrat()),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 16, bottom: 12),
                     child: Text(
-                      'Prince of Peace Songs',
+                      'Nambike Hymns',
                       style: GoogleFonts.montserrat(
                         color: Colors.white,
                         fontSize: 20,
@@ -149,14 +152,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   _showAboutDialog(context);
                 },
               ),
-              ListTile(
-                leading: const Icon(Icons.person),
-                title: Text('About Developer', style: GoogleFonts.montserrat()),
-                onTap: () {
-                  Navigator.pop(context);
-                  _showDeveloperDialog(context);
-                },
-              ),
+              // ListTile(
+              //   leading: const Icon(Icons.person),
+              //   title: Text('About Developer', style: GoogleFonts.montserrat()),
+              //   onTap: () {
+              //     Navigator.pop(context);
+              //     _showDeveloperDialog(context);
+              //   },
+              // ),
             ],
           ),
         ),
