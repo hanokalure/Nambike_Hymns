@@ -7,8 +7,7 @@ plugins {
 android {
     namespace = "com.example.my_first_app"
     compileSdk = flutter.compileSdkVersion.toInt()
-    
-    // Set NDK version (remove duplicate declaration)
+
     ndkVersion = "27.0.12077973"
 
     compileOptions {
@@ -21,16 +20,31 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.my_first_app"
+        applicationId = "com.hanokalure.worshipverse"
         minSdk = flutter.minSdkVersion.toInt()
         targetSdk = flutter.targetSdkVersion.toInt()
         versionCode = flutter.versionCode.toInt()
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("release-key.jks")
+            storePassword = "Nambike@123"
+            keyAlias = "my-key-alias"
+            keyPassword = "Nambike@123"
+        }
+    }
+
     buildTypes {
-        release {
-            signingConfig = signingConfigs.getByName("debug")
+        getByName("release") {
+            isMinifyEnabled = false
+            isShrinkResources = false
+            signingConfig = signingConfigs.getByName("release")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 }
