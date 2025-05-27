@@ -22,6 +22,14 @@ dev_dependencies:
 
  
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: "^0.13.1"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "lib/assets/images/icon.png"  # Path to your image
+  # Optional: Adjust size for Android (default scales automatically)
+  android_adaptive_icon_foreground_size: "70%"
 
 
 
@@ -31,5 +39,5 @@ flutter:
 
   uses-material-design: true
 
- 
+
  
