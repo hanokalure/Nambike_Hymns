@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Prince of Peace Songs',
+      title: 'Nambike Hymns',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: const HomeScreen(),
     );
