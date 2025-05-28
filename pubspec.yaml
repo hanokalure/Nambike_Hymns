@@ -1,6 +1,6 @@
 name: my_first_app
 description: "A new Flutter project."
-
+#developer : Hanok_Alure
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
