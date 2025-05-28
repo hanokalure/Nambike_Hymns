@@ -1,6 +1,6 @@
 # 🎵 Nambike Hymns
 
-A beautiful and intuitive **Flutter mobile app** designed for easy browsing, favoriting, and viewing lyrics of songs from the Prince of Peace collection. Built for offline use and a smooth user experience.
+A beautiful and intuitive **Flutter mobile app** designed for easy browsing, favoriting, and viewing lyrics of songs from the Nambike Hymns collection. Built for offline use and a smooth user experience.
 
 ## 📱 Features
 - **🎶 Home Screen**: Browse a list of songs with search functionality.
