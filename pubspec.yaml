@@ -4,7 +4,7 @@ description: "A new Flutter project."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
-version: 1.0.1+4
+version: 1.0.1+6
 
 environment:
   sdk: ^3.7.2
@@ -27,7 +27,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "lib/assets/images/icon.png"  # Path to your image
+  image_path: "lib/assets/images/appicon.png"  # Path to your image
   # Optional: Adjust size for Android (default scales automatically)
   android_adaptive_icon_foreground_size: "70%"
 
